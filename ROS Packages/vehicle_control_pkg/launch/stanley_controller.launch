@@ -1,0 +1,24 @@
+<?xml version='1.0'?>
+
+<launch>
+    <!-- Input Arguments -->
+    <arg name="traj_topic_name" default="/offline_planner/trajectory" />
+    <arg name="pose_topic_name" default="/odom" />
+    <arg name="steering_topic_name" default="/SteeringAngle" />
+    <arg name="steering_max" default="0.5236" />
+    <arg name="wheelbase" default="2.269" />
+    <arg name="rear_to_cg" default="1.1345" />
+
+    <!-- Launch Node -->
+    <node name="stanley_controller" pkg="vehicle_control_pkg" type="stanley_controller.py" output="screen">
+        
+        <!-- Input Parameters -->
+        <param name="traj_topic_name" value="$(arg traj_topic_name)" />
+        <param name="pose_topic_name" value="$(arg pose_topic_name)" />
+        <param name="steering_topic_name" value="$(arg steering_topic_name)" />
+        <param name="steering_max" value="$(arg steering_max)" />
+        <param name="wheelbase" value="$(arg wheelbase)" />
+        <param name="rear_to_cg" value="$(arg rear_to_cg)" />
+    </node>
+
+</launch>

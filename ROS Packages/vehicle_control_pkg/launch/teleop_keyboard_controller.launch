@@ -1,0 +1,28 @@
+<?xml version='1.0'?>
+
+<launch>
+    <!-- Input Arguments -->
+    <arg name="steering_topic_name" default="/SteeringAngle" />
+    <arg name="throttle_topic_name" default="/cmd_vel" />
+    <arg name="brakes_topic_name" default="/brakes" />
+    <arg name="steering_max" default="0.7854" />
+    <arg name="steering_incr" default="0.08726" />
+    <arg name="velocity_max" default="33.33" />
+    <arg name="velocity_reverse_max" default="4.0" />
+    <arg name="velocity_incr" default="0.5" />
+    <arg name="sample_time" default="0.1" />
+
+    <!-- Launch Node -->
+    <node name="teleop_keyboard_controller" pkg="vehicle_control_pkg" type="teleop_keyboard_controller" output="screen">
+        <param name="steering_topic_name" value="$(arg steering_topic_name)" />
+        <param name="throttle_topic_name" value="$(arg throttle_topic_name)" />
+        <param name="brakes_topic_name" value="$(arg brakes_topic_name)" />
+        <param name="steering_max" value="$(arg steering_max)" />
+        <param name="steering_incr" value="$(arg steering_incr)" />
+        <param name="velocity_max" value="$(arg velocity_max)" />
+        <param name="velocity_reverse_max" value="$(arg velocity_reverse_max)" />
+        <param name="velocity_incr" value="$(arg velocity_incr)" />
+        <param name="sample_time" value="$(arg sample_time)" />
+    </node>
+
+</launch>

@@ -1,0 +1,31 @@
+<?xml version='1.0'?>
+
+<launch>
+    <!-- Input Arguments -->
+    <arg name="traj_topic_name" default="/offline_planner/trajectory" />
+    <arg name="pose_topic_name" default="/odom" />
+    <arg name="velocity_topic_name" default="/cmd_vel" />
+    <arg name="brakes_topic_name" default="/brakes" />
+    <arg name="velocity_max" default="33.33" />
+    <arg name="acc_long_max" default="2.0" />
+    <arg name="dec_long_max" default="4.0" />
+    <!-- <arg name="brake_dec_max" default="43.484" /> -->
+    <arg name="brake_dec_max" default="40.0" />    
+    <arg name="rear_to_cg" default="1.1345" />
+    <arg name="forward_horizon" default="0.2" />
+
+    <node name="longitudinal_controller" pkg="vehicle_control_pkg" type="longitudinal_controller.py" output="screen" >
+        
+        <!-- Input Parameters -->
+        <param name="traj_topic_name" value="$(arg traj_topic_name)" />
+        <param name="pose_topic_name" value="$(arg pose_topic_name)" />
+        <param name="velocity_topic_name" value="$(arg velocity_topic_name)" />
+        <param name="brakes_topic_name" value="$(arg brakes_topic_name)" />
+        <param name="velocity_max" value="$(arg velocity_max)" />
+        <param name="acc_long_max" value="$(arg acc_long_max)" />
+        <param name="dec_long_max" value="$(arg dec_long_max)" />
+        <param name="brake_dec_max" value="$(arg brake_dec_max)" />
+        <param name="rear_to_cg" value="$(arg rear_to_cg)" />
+        <param name="forward_horizon" value="$(arg forward_horizon)" />
+    </node>
+</launch>

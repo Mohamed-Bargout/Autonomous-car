@@ -1,0 +1,56 @@
+<?xml version='1.0'?>
+
+<launch>
+    <!-- Input Arguments -->
+    <arg name="controller_type" default="stanley" /> <!-- "teleop_keyboard" or "open_loop or "stanley"-->
+    <!-- <arg name="traj_topic_name" default="/offline_planner/trajectory" /> -->
+    <arg name="traj_topic_name" default="/local_planner/trajectory" />
+    <arg name="pose_topic_name" default="/odom" />
+    <arg name="steering_topic_name" default="/SteeringAngle" />
+    <arg name="throttle_topic_name" default="/cmd_vel" />
+    <arg name="brakes_topic_name" default="/brakes" />
+    <arg name="steering_max" default="0.6981317" />
+    <arg name="velocity_max" default="33.33" />
+    <arg name="velocity_reverse_max" default="2.0" />
+    <arg name="wheelbase" default="2.269" />
+    <!-- <arg name="rear_to_cg" default="1.1345" /> -->
+    <arg name="rear_to_cg" default="0.0" />
+
+    <!-- Launch Teleop Keyboard Controller -->
+    <include file="$(find vehicle_control_pkg)/launch/teleop_keyboard_controller.launch" if="$(eval controller_type == 'teleop_keyboard')">
+        <arg name="steering_topic_name" value="$(arg steering_topic_name)" />
+        <arg name="throttle_topic_name" value="$(arg throttle_topic_name)" />
+        <arg name="brakes_topic_name" value="$(arg brakes_topic_name)" />
+        <arg name="steering_max" value="$(arg steering_max)" />
+        <arg name="velocity_max" value="$(arg velocity_max)" />
+        <arg name="velocity_reverse_max" value="$(arg velocity_reverse_max)" />
+    </include>
+    
+    <!-- Launch Open Loop Controller -->
+    <include file="$(find vehicle_control_pkg)/launch/open_loop_controller.launch" if="$(eval controller_type == 'open_loop')">
+        <arg name="traj_topic_name" value="$(arg traj_topic_name)" />
+        <arg name="steering_topic_name" value="$(arg steering_topic_name)" />
+        <arg name="throttle_topic_name" value="$(arg throttle_topic_name)" />
+        <arg name="velocity_max" value="$(arg velocity_max)" />
+    </include>
+
+    <!-- Launch Stanley Controller -->
+    <include file="$(find vehicle_control_pkg)/launch/stanley_controller.launch" if="$(eval controller_type == 'stanley')">
+        <arg name="traj_topic_name" value="$(arg traj_topic_name)" />
+        <arg name="pose_topic_name" value="$(arg pose_topic_name)" />
+        <arg name="steering_topic_name" value="$(arg steering_topic_name)" />
+        <arg name="steering_max" value="$(arg steering_max)" />
+        <arg name="wheelbase" value="$(arg wheelbase)" />
+        <arg name="rear_to_cg" value="$(arg rear_to_cg)" />
+    </include>
+
+    <!-- Launch Longitudinal Controller -->
+    <include file="$(find vehicle_control_pkg)/launch/longitudinal_controller.launch" if="$(eval controller_type == 'stanley')">
+        <arg name="traj_topic_name" value="$(arg traj_topic_name)" />
+        <arg name="pose_topic_name" value="$(arg pose_topic_name)" />
+        <arg name="velocity_topic_name" value="$(arg throttle_topic_name)" />
+        <arg name="brakes_topic_name" value="$(arg brakes_topic_name)" />
+        <arg name="velocity_max" value="$(arg velocity_max)" />
+        <arg name="rear_to_cg" value="$(arg rear_to_cg)" />
+    </include>
+</launch>

@@ -1,0 +1,75 @@
+<?xml version='1.0'?>
+
+<launch>
+    <!-- Input Arguments - System Configuration -->
+    <arg name="controller_type" default="stanley" /> <!-- "teleop_keyboard" or "open_loop" or "stanley"-->
+    <arg name="use_online_planner" default="true" />
+    <arg name="path_type" default="infinity" /> <!-- Type of path: 'straight', 'circular', 'lane_change', 'infinity' -->
+    <arg name="closed_loop" default="true" /> <!-- Redundent, could be removed in the future -->
+    <arg name="use_depth" default="true" />
+    <arg name="use_less_classes" default="false" />
+
+    <!-- Input Arguments - External Topic Names -->
+    <arg name="pose_topic_name" default="/odom" />
+    <!-- <arg name="pose_topic_name" default="/state_estimator/odometry" /> -->
+    <arg name="steering_topic_name" default="/SteeringAngle" />
+    <arg name="throttle_topic_name" default="/cmd_vel" />
+    <arg name="brakes_topic_name" default="/brakes" />
+    <arg name="image_rgb_topic_name" default="/image" />
+    <arg name="image_depth_topic_name" default="/image_depth" />
+
+    <!-- Input Arguments - Vehicle Parameters -->
+    <arg name="vehicle_length" default="4.0" />
+    <arg name="vehicle_width" default="2.0" />
+    <arg name="wheelbase" default="2.269" />
+    <arg name="rear_to_cg" default="1.135" />
+
+    <!-- Input Arguments - Camera Parameters -->
+    <arg name="prespective_angle_x" default="80" />    
+    <arg name="resolution_x" default="960" />
+    <arg name="resolution_y" default="480" />
+    <arg name="depth_max" default="30.0" />
+
+    <!-- Include State Estimation Package -->
+    <!-- <include file="$(find autonomx_state_estimator)/launch/state_estimator.launch" >
+        <arg name="steering_topic_name" value="$(arg steering_topic_name)" />
+        <arg name="wheelbase" value="$(arg wheelbase)" />
+    </include> -->
+
+    <!-- Include Perception Package -->
+    <include file="$(find perception_pkg)/launch/perception.launch" >
+        <arg name="odom_topic_name" value="$(arg pose_topic_name)" />
+        <arg name="image_rgb_topic_name" value="$(arg image_rgb_topic_name)" />
+        <arg name="image_depth_topic_name" value="$(arg image_depth_topic_name)" />
+        <arg name="prespective_angle_x" value="$(arg prespective_angle_x)" />
+        <arg name="resolution_x" value="$(arg resolution_x)" />
+        <arg name="resolution_y" value="$(arg resolution_y)" />
+        <arg name="use_depth" value="$(arg use_depth)" />
+        <arg name="use_less_classes" value="$(arg use_less_classes)" />
+    </include>
+
+    <!-- Include Path Planning Package -->
+    <include file="$(find path_planning_pkg)/launch/planner.launch" >
+        <arg name="pose_topic_name" value="$(arg pose_topic_name)" />
+        <arg name="use_online_planner" value="$(arg use_online_planner)" />
+        <arg name="path_type" value="$(arg path_type)" />
+        <arg name="publish_heading" value="$(arg closed_loop)" />
+        <arg name="vehicle_length" value="$(arg vehicle_length)" />
+        <arg name="vehicle_width" value="$(arg vehicle_width)" />
+        <arg name="wheelbase" value="$(arg wheelbase)" />
+        <arg name="rear_to_cg" value="$(arg rear_to_cg)" />
+    </include>
+
+
+    <!-- Include Vehicle Control Package -->
+    <include file="$(find vehicle_control_pkg)/launch/vehicle_control.launch" >
+        <arg name="controller_type" value="$(arg controller_type)" />
+        <arg name="pose_topic_name" value="$(arg pose_topic_name)" />
+        <arg name="steering_topic_name" value="$(arg steering_topic_name)" />
+        <arg name="throttle_topic_name" value="$(arg throttle_topic_name)" />
+        <arg name="brakes_topic_name" value="$(arg brakes_topic_name)" />
+        <arg name="wheelbase" value="$(arg wheelbase)" />
+        <arg name="rear_to_cg" value="$(arg rear_to_cg)" />
+    </include>
+    
+</launch>

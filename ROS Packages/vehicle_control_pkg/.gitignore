@@ -1,0 +1,4 @@
+# Ignore .vscode directory
+.vscode/
+
+# Add other files or patterns that should be ignored
